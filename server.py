@@ -1,10 +1,10 @@
-from app.services.async_task import async_task
+from app.blueprints.simple_service import simple_service
+from app.blueprints.task_result import task_result
 from app.utils.factory import flask_init_app
-from app.views import simple_service
 
 flask_app = flask_init_app()
 flask_app.register_blueprint(simple_service)
-flask_app.register_blueprint(async_task)
+flask_app.register_blueprint(task_result)
 
 # `celery -A server worker` needs this variable
 celery_app = flask_app.extensions["celery"]

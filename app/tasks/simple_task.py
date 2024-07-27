@@ -3,7 +3,7 @@ import time
 
 from celery import shared_task
 
-from app.services.async_task import progress_callback
+from app.blueprints.task_result import progress_callback
 
 
 @shared_task(ignore_result=False)

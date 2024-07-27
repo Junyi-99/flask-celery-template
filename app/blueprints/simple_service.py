@@ -1,11 +1,11 @@
 from flask import Blueprint, render_template, request
 
-from app.tasks import add_together, send_email
+from app.tasks.simple_task import add_together, send_email
 
 simple_service = Blueprint(
     name="simple_service",
     import_name=__name__,
-    template_folder="templates/simple_service",
+    template_folder="../templates/simple_service",
 )
 
 

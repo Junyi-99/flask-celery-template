@@ -2,9 +2,9 @@ from typing import NotRequired, Optional, TypedDict
 
 from celery import Task
 from celery.result import AsyncResult
-from flask import Blueprint, jsonify
+from flask import Blueprint, current_app, jsonify
 
-async_task = Blueprint("async_task_service", __name__)
+task_result = Blueprint("task_result", __name__)
 
 
 class TaskResult(TypedDict):
@@ -29,8 +29,8 @@ def progress_callback(self: Task, current: int, total: int, message: str = "") -
     )
 
 
-@async_task.get("/task/<task_id>")
-def task_result(task_id: str):
+@task_result.get("/task/<task_id>")
+def task_result_fn(task_id: str):
     result = AsyncResult(task_id)
 
     response = TaskResult(
@@ -48,7 +48,26 @@ def task_result(task_id: str):
         case "SUCCESS":  # eventual state
             response.update({"result": result.result})
         case "PROGRESS":  # Custom progress state
-            response.update({"current": result.info["current"], "total": result.info["total"], "message": result.info["message"]})  # noqa: E501
+            response.update(
+                {
+                    "current": result.info["current"],
+                    "total": result.info["total"],
+                    "message": result.info["message"],
+                }
+            )  # noqa: E501
         case _:  # catch-all
             response.update({"message": f"Unknown state: {result.state}, info: {result.info}"})  # noqa: E501
+    return (jsonify(response), 200)
+
+
+@task_result.get("/task/all")
+def task_result_all_fn():
+    celery_app = current_app.extensions["celery"]
+    i = celery_app.control.inspect()
+    response = {
+        "active": i.active(),
+        "scheduled": i.scheduled(),
+        "reserved": i.reserved(),
+        "stats": i.stats(),
+    }
     return (jsonify(response), 200)
