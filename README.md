@@ -1,12 +1,24 @@
 # Flask-Celery Template
 
-| Condition                      | Result                                                                                       |
-|--------------------------------|----------------------------------------------------------------------------------------------|
-| Flask is shut down             | Does not affect Celery                                                                       |
-| Celery is shut down            | Flask receives tasks, but no one executes them, so all tasks remain in Pending status        |
-| Flask is running, Celery is not | Tasks are submitted to Redis with status Pending; Celery will execute pending tasks once started |
+![preview.png](doc/flask-celery-preview.png)
 
-## Get Started Option I: Manually
+## Get Started Option I: Docker
+
+```bash
+echo "REDIS_PASSWORD=somerandompassword" > .env
+docker compose build
+# Additional labels for build
+# --no-cache: build the image from scratch without using cached layers
+# -d: runs the containers in detached mode
+
+# Start all services
+docker compose up
+
+# Stop all services
+docker compose down
+```
+
+## Get Started Option II: Manually
 
 ### Prerequisites
 
@@ -39,22 +51,14 @@ flask --app server.flask_app run
 
 By following these steps, you will have Flask and Celery running, ready to handle tasks efficiently.
 
-## Get Started Option II: Docker
-
-```bash
-echo "REDIS_PASSWORD=somerandompassword" > .env
-docker compose build
-# Additional labels for build
-# --no-cache: build the image from scratch without using cached layers
-# -d: runs the containers in detached mode
-
-# Start all services
-docker compose up
-
-# Stop all services
-docker compose down
-```
-
 ## License
 
 This project is licensed under the MIT License.
+
+## Appendix
+
+| Condition                      | Result                                                                                       |
+|--------------------------------|----------------------------------------------------------------------------------------------|
+| Flask is shut down             | Does not affect Celery                                                                       |
+| Celery is shut down            | Flask receives tasks, but no one executes them, so all tasks remain in Pending status        |
+| Flask is running, Celery is not | Tasks are submitted to Redis with status Pending; Celery will execute pending tasks once started |
