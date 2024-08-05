@@ -1,6 +1,6 @@
-# pull official base image
+# The pytorch/pytorch:2.4.0-cuda12.4-cudnn9-runtime uses python3.11.9
 # FROM pytorch/pytorch:2.4.0-cuda12.4-cudnn9-runtime
-FROM python:3.11.0a7-slim-buster
+FROM python:3.11.9-slim-bookworm
 
 # set work directory
 WORKDIR /flask-celery-app
