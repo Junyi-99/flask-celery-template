@@ -6,9 +6,12 @@
 | Celery is shut down            | Flask receives tasks, but no one executes them, so all tasks remain in Pending status        |
 | Flask is running, Celery is not | Tasks are submitted to Redis with status Pending; Celery will execute pending tasks once started |
 
-## Prerequisites
+## Get Started Option I: Manually
 
-Ensure you have `Python 3.12` installed and a `Redis` instance running.
+### Prerequisites
+
+- `Python 3.12`
+- `Redis`
 
 You can quickly set up a Redis instance using Docker:
 
@@ -16,7 +19,7 @@ You can quickly set up a Redis instance using Docker:
 docker run -d --name celery-redis -p 6379:6379 redis
 ```
 
-## Option I: Manually
+### Manually Running
 
 Start the Celery worker and the Flask development server with the following commands:
 
@@ -36,11 +39,14 @@ flask --app server.flask_app run
 
 By following these steps, you will have Flask and Celery running, ready to handle tasks efficiently.
 
-## Option II: Docker
+## Get Started Option II: Docker
 
 ```bash
 echo "REDIS_PASSWORD=somerandompassword" > .env
 docker compose build
+# Additional labels for build
+# --no-cache: build the image from scratch without using cached layers
+# -d: runs the containers in detached mode
 
 # Start all services
 docker compose up
@@ -48,3 +54,7 @@ docker compose up
 # Stop all services
 docker compose down
 ```
+
+## License
+
+This project is licensed under the MIT License.

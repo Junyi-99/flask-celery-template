@@ -27,7 +27,7 @@ services:
 
   celery-worker:
     build: .
-    command: celery --app server.celery_app worker --loglevel=info --logfile=celery.log --pool solo
+    command: celery --app server.celery_app worker --pool=threads --concurrency=${CELERY_CONCURRENCY:-4} --loglevel=info --logfile=celery.log
     volumes:
       - .:/flask-celery-app
       - uploaded:/uploads
@@ -40,7 +40,7 @@ services:
     depends_on:
       - flask
       - redis
-    # deploy: # Uncomment this block to enable GPU support
+    # deploy: # Uncomment this block to enable GPU support, remember set --pool=solo
     #   resources:
     #     reservations:
     #       devices:
@@ -50,7 +50,7 @@ services:
 
   celery-dashboard:
     build: .
-    command: celery --app server.celery_app flower --port=5555 --loglevel=info --logfile=flower.log
+    command: celery --app server.celery_app flower --port=5555 --basic-auth=admin:admin
     ports:
       - 25556:5555
     volumes:
