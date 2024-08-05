@@ -20,7 +20,7 @@ docker compose down
 
 Flask is running at `http://127.0.0.1:25555`
 
-Celery flower is running at `http://127.0.0.1:25556`, default username and password are both `admin`
+Celery flower is running at `http://127.0.0.1:25556`, the default username and password are both `admin`
 
 ## Get Started Option II: Manually
 
