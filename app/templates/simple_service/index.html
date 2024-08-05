@@ -1,34 +1,33 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Flask-Celery Template</title>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" />
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-  </head>
-  <body>
-    <div class="container-sm">
-      <h1>Flask-Celery Template</h1>
-      {% if name %}
-        <p>Hello {{ name }}!</p>
-      {% else %}
-        <p>Hello, Anonymous User!</p>
-      {% endif %}
-      <p>This is a simple Flask-Celery template that enables asynchronous tasks. It demonstrates the following:</p>
-      <p>This template is designed to help you quickly integrate asynchronous task processing into your Flask applications using Celery.</p>
 
-      <h1>Add two numbers</h1>
-      <a href="./add?a=1&b=2">/add?a=1&b=2</a>
-      <p>Demonstrates a simple asynchronous task.</p>
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Flask-Celery Template</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" />
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+</head>
 
-      <h1>Send email</h1>
-      <a href="./send_email">/send_email</a>
-      <p>Demonstrates an asynchronous task with progress report.</p>
+<body>
+  <div class="container-sm">
+    <h1>Flask-Celery Template</h1>
+    {% if name %}
+    <p>Hello {{ name }}!</p>
+    {% else %}
+    <p>Hello, Anonymous User!</p>
+    {% endif %}
 
-      <h1>Get Task Status</h1>
-      <a href="./task/<taskid>">/task/your-task-id</a>
-      <p>Get the status of a task by its ID.</p>
-    </div>
-  </body>
+    {% for route in routes %}
+        <h2>{{route}}</h2>
+        {% for suburl in routes[route] %}
+            <p>
+              <span><a href=".{{suburl[0]}}">{{suburl[0]}}</a></span>
+              <span>{{suburl[1]}}</span>
+            </p>
+        {%endfor%}
+    {% endfor %}
+  </div>
+</body>
+
 </html>

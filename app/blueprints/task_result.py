@@ -1,4 +1,4 @@
-from typing import NotRequired, Optional, TypedDict
+from typing import Optional, TypedDict
 
 from celery import Task
 from celery.result import AsyncResult
@@ -10,10 +10,10 @@ task_result = Blueprint("task_result", __name__)
 class TaskResult(TypedDict):
     ready: bool
     state: str
-    current: NotRequired[int]
-    total: NotRequired[int]
-    message: NotRequired[str]
-    result: NotRequired[Optional[object]]
+    current: int
+    total: int
+    message: str
+    result: Optional[object]
 
 
 def progress_callback(self: Task, current: int, total: int, message: str = "") -> None:  # noqa: E501
@@ -33,10 +33,7 @@ def progress_callback(self: Task, current: int, total: int, message: str = "") -
 def task_result_fn(task_id: str):
     result = AsyncResult(task_id)
 
-    response = TaskResult(
-        ready=result.ready(),
-        state=result.state,
-    )
+    response = TaskResult(ready=result.ready(), state=result.state)  # type: ignore  # noqa: E501
 
     match result.state:
         case "PENDING":

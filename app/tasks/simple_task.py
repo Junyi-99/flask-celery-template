@@ -14,7 +14,7 @@ def add_together(a: int, b: int) -> int:
 
 
 @shared_task(ignore_result=False, bind=True)
-def send_email(self) -> str:
+def send_email(self, attachment: str | None = None) -> str:
     # Before calling the function, the task status should be "PENDING"
     recipients = [
         "John",
@@ -25,17 +25,17 @@ def send_email(self) -> str:
     totaln = len(recipients)
 
     # The task status will be updated to "STARTED" by celery automatically
-    logging.info("Start sending email")
+    logging.info(f"Start sending email, with attachment: {attachment}")
 
     time.sleep(10)
 
     for idx, rep in enumerate(recipients):
         time.sleep(5)
-        logging.info(f"[{idx}/{totaln}] Sending email to {rep} with message)")  # noqa: E501
+        logging.info(f"[{idx}/{totaln}] Sending email to {rep} with attachment {attachment})")  # noqa: E501
         # Update the task status to "PROGRESS"
         progress_callback(self, idx + 1, totaln, message=f"Sent to recipient: {rep}")  # noqa: E501
 
     time.sleep(5)  # final checks...
 
     # After the return, the task status will be updated to "SUCCESS"
-    return "Email all sent"
+    return f"Email all sent, with attachment: {attachment}"

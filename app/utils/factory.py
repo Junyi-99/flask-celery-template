@@ -2,16 +2,16 @@ from celery import Celery, Task
 from flask import Flask
 
 
-def celery_init_app(app: Flask) -> Celery:
+def celery_init_app(flask_app: Flask) -> Celery:
     class FlaskTask(Task):
         def __call__(self, *args: object, **kwargs: object) -> object:
-            with app.app_context():
+            with flask_app.app_context():
                 return self.run(*args, **kwargs)
 
-    celery_app = Celery(app.name, task_cls=FlaskTask)
-    celery_app.config_from_object(app.config["CELERY"])
+    celery_app = Celery(flask_app.name, task_cls=FlaskTask)
+    celery_app.config_from_object(flask_app.config["CELERY"])
     celery_app.set_default()
-    app.extensions["celery"] = celery_app
+    flask_app.extensions["celery"] = celery_app
     return celery_app
 
 
@@ -30,5 +30,4 @@ def flask_init_app() -> Flask:
         )
     )
     flask_app.config.from_prefixed_env()
-    celery_init_app(flask_app)
     return flask_app

@@ -16,7 +16,7 @@ You can quickly set up a Redis instance using Docker:
 docker run -d --name celery-redis -p 6379:6379 redis
 ```
 
-## Getting Started
+## Option I: Manually
 
 Start the Celery worker and the Flask development server with the following commands:
 
@@ -25,7 +25,7 @@ Start the Celery worker and the Flask development server with the following comm
 celery -A server worker --loglevel INFO
 
 # Run the Flask development server
-flask --app server run
+flask --app server.flask_app run
 
 # Optional: Start the Celery periodic task scheduler (e.g., for auto-backup)
 # celery -A server beat --loglevel INFO
@@ -35,3 +35,16 @@ flask --app server run
 ```
 
 By following these steps, you will have Flask and Celery running, ready to handle tasks efficiently.
+
+## Option II: Docker
+
+```bash
+echo "REDIS_PASSWORD=somerandompassword" > .env
+docker compose build
+
+# Start all services
+docker compose up
+
+# Stop all services
+docker compose down
+```

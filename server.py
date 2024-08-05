@@ -1,13 +1,19 @@
+from app.blueprints.file_process import file_process
+
+# Demo for file upload and long running process
+from app.blueprints.file_upload import file_upload
 from app.blueprints.simple_service import simple_service
 from app.blueprints.task_result import task_result
-from app.utils.factory import flask_init_app
+from app.utils.factory import celery_init_app, flask_init_app
 
 flask_app = flask_init_app()
 flask_app.register_blueprint(simple_service)
 flask_app.register_blueprint(task_result)
+flask_app.register_blueprint(file_upload)
+flask_app.register_blueprint(file_process)
 
 # `celery -A server worker` needs this variable
-celery_app = flask_app.extensions["celery"]
+celery_app = celery_init_app(flask_app)
 
 
 @flask_app.after_request

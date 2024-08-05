@@ -1,3 +1,8 @@
+uploads/
+.env
+celery.log
+flower.log
+
 .idea/
 .vscode/
 .venv*/
