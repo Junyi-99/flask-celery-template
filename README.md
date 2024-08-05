@@ -18,6 +18,10 @@ docker compose up
 docker compose down
 ```
 
+Flask is running at `http://127.0.0.1:25555`
+
+Celery flower is running at `http://127.0.0.1:25556`, default username and password is both `admin`
+
 ## Get Started Option II: Manually
 
 ### Prerequisites
