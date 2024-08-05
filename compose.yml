@@ -21,7 +21,7 @@ services:
       - CELERY_RESULT_BACKEND=redis://:${REDIS_PASSWORD}@redis:6379/0
     volumes:
       - .:/flask-celery-app
-      - uploaded:/uploads
+      # - uploaded:/uploads  # uncomment this if you want to use docker volume to handle uploaded files
     depends_on:
       - redis
 
@@ -30,7 +30,7 @@ services:
     command: celery --app server.celery_app worker --pool=threads --concurrency=${CELERY_CONCURRENCY:-4} --loglevel=info --logfile=celery.log
     volumes:
       - .:/flask-celery-app
-      - uploaded:/uploads
+      # - uploaded:/uploads  # uncomment this if you want to use docker volume to handle uploaded files
     environment:
       - FLASK_DEBUG=1
       - APP_SETTINGS=project.server.config.DevelopmentConfig
@@ -68,5 +68,5 @@ services:
 volumes:
   cache:
     driver: local
-  uploaded:
-    driver: local
+  # uploaded:   # uncomment this if you want to use docker volume to handle uploaded files
+    # driver: local  # uncomment this if you want to use docker volume to handle uploaded files
