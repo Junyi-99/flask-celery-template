@@ -5,7 +5,10 @@
 ## Get Started Option I: Docker
 
 ```bash
-echo "REDIS_PASSWORD=somerandompassword" > .env
+git submodule update --init --recursive
+
+echo "REDIS_PASSWORD=$(tr -dc A-Za-z0-9 </dev/urandom | head -c 32; echo)" > .env
+
 docker compose build
 # Additional labels for build
 # --no-cache: build the image from scratch without using cached layers
